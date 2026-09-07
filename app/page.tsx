@@ -280,10 +280,10 @@ export default function Home() {
             >
               <div>
                 <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
-                  {entry.role}
+                  {entry.org}
                 </h3>
                 <p className="mt-2 font-sans text-sm uppercase tracking-[0.1em] text-[#171412]/60">
-                  {entry.org} — {entry.location}
+                  {entry.role} — {entry.location}
                 </p>
                 <p className="mt-1 font-sans text-sm text-[#171412]/45">
                   {entry.dates}
