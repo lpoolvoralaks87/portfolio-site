@@ -142,6 +142,15 @@ const awards: AwardEntry[] = [
     highlights: ["Written by a Managing Director at Accenture."],
     requestAccess: true,
   },
+  {
+    title: "Letter of Reference",
+    org: "SeaX Ventures",
+    location: "Millbrae, California",
+    highlights: [
+      "Written by Weerawat Wongcharoenyai, Principal, and Supachai Kid Parchariyanon, Managing Partner, at SeaX Ventures.",
+    ],
+    requestAccess: true,
+  },
 ];
 
 const works: WorkCategory[] = [
@@ -220,14 +229,13 @@ export default function Home() {
           Who am I
         </h2>
         <p className="mt-6 max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/65">
-          I&apos;m an economics student at Claremont McKenna College,
-          minoring in data science, graduating May 2027. Coursework spans
-          accounting data analytics, statistics, econometrics, corporate
-          finance, and banking &amp; financial intermediation. Outside of
-          class I&apos;m usually somewhere between a pitch deck and a
-          spreadsheet — currently splitting time between Accenture and
-          Girls Into Venture Capital, the chapter I founded across the
-          Claremont Colleges.
+          I was born and raised in Bangkok, Thailand, before moving to
+          California for college, where I started out as a Chemistry major
+          before switching allegiances to Economics and Data Science.
+          Outside of class, I&apos;m probably wrangling a cat I&apos;m
+          deeply allergic to, doing my daily Sudoku, or scavenging for a
+          new favorite restaurant while pondering Tolstoy somewhere between
+          bites.
         </p>
 
         <dl className="mt-12 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-8 font-sans text-sm sm:grid-cols-3">
