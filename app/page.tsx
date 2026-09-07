@@ -1,4 +1,15 @@
+import Image from "next/image";
 import AboutHero from "@/components/AboutHero";
+
+const REQUEST_ACCESS_EMAIL = "lpoolvoralaks87@cmc.edu";
+
+function requestAccessHref(title: string) {
+  const subject = `Access request: ${title}`;
+  const body = `Hi Lalita,\n\nI'd like to request access to read "${title}".\n\nThanks!`;
+  return `mailto:${REQUEST_ACCESS_EMAIL}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+}
 
 type ExperienceEntry = {
   role: string;
@@ -12,16 +23,23 @@ type AwardEntry = {
   title: string;
   org: string;
   location: string;
-  dates: string;
+  dates?: string;
   highlights: string[];
+  requestAccess?: boolean;
 };
 
 type WorkEntry = {
   title: string;
-  kind: "Project" | "Paper";
+  kind: string;
   meta: string;
   description: string;
+  image: string;
   href?: string;
+};
+
+type WorkCategory = {
+  label: string;
+  entries: WorkEntry[];
 };
 
 const experience: ExperienceEntry[] = [
@@ -117,30 +135,75 @@ const awards: AwardEntry[] = [
     dates: "May 2026",
     highlights: ["Placed second out of 50+ participants"],
   },
+  {
+    title: "Letter of Recommendation",
+    org: "Accenture",
+    location: "Bangkok, Thailand",
+    highlights: ["Written by a Managing Director at Accenture."],
+    requestAccess: true,
+  },
 ];
 
-const works: WorkEntry[] = [
+const works: WorkCategory[] = [
   {
-    title: "Replace with your project title",
-    kind: "Project",
-    meta: "2026",
-    description:
-      "One or two sentences on what you built, the problem it solved, and your role. Link it out if it's live.",
-    href: "#",
+    label: "Science",
+    entries: [
+      {
+        title:
+          "Optimising Aluminium Sulphate Concentration in Caesalpinia Sappan Dye Mordanting",
+        kind: "Extended Essay",
+        meta: "2023",
+        description:
+          "Measures how aluminium sulphate concentration affects the colour fastness of Caesalpinia sappan natural dye on cotton, using photo analysis and spectrophotometry to weigh dyeing performance against environmental impact.",
+        image: "/works/ee-mordant-dye.png",
+      },
+      {
+        title: "Salinity as a Constraint on Dissolved Oxygen in Canal Water",
+        kind: "Chemistry IA",
+        meta: "2023",
+        description:
+          "A titrimetric investigation into how salinity affects dissolved oxygen levels in a polluted Bangkok canal, using the Winkler method to test whether saline runoff threatens aquatic life.",
+        image: "/works/chem-ia-salinity.png",
+      },
+      {
+        title: "Chromatic Influence on Memory Retention",
+        kind: "Psychology IA · Group 4",
+        meta: "2023",
+        description:
+          "A repeated-measures experiment testing whether red versus black text affects word recall, examining Bargh's auto-motive model and the assumption that red undermines performance.",
+        image: "/works/psych-ia-color-recall.png",
+      },
+      {
+        title:
+          "Habitat-Driven Variation in Stomatal Density of Epipremnum Aureum",
+        kind: "Biology IA",
+        meta: "2023",
+        description:
+          "A comparative study of stomatal density in Epipremnum aureum grown indoors versus outdoors, linking the difference to light, humidity, temperature, and watering frequency.",
+        image: "/works/bio-ia-stomatal-density.png",
+      },
+    ],
   },
   {
-    title: "Replace with your paper title",
-    kind: "Paper",
-    meta: "Econ 190, 2026",
-    description:
-      "A short abstract-style summary — what you researched and what you found.",
-    href: "#",
-  },
-  {
-    title: "Replace with another project title",
-    kind: "Project",
-    meta: "2025",
-    description: "Same idea — swap in your own project details here.",
+    label: "Philosophy",
+    entries: [
+      {
+        title: "Is replicability necessary in the production of knowledge?",
+        kind: "TOK Essay",
+        meta: "May 2023",
+        description:
+          "Examines whether replicability is necessary for producing knowledge, comparing its role in the human sciences against the arts.",
+        image: "/works/tok-essay-replicability.png",
+      },
+      {
+        title: "To what extent is certainty attainable?",
+        kind: "TOK Exhibition",
+        meta: "May 2023",
+        description:
+          "Explores the extent to which certainty is attainable through everyday objects, including the periodic table and cultural superstition.",
+        image: "/works/tok-exhibition-certainty.png",
+      },
+    ],
   },
 ];
 
@@ -249,15 +312,27 @@ export default function Home() {
                 <p className="mt-2 font-sans text-sm uppercase tracking-[0.1em] text-[#171412]/60">
                   {award.title} — {award.location}
                 </p>
-                <p className="mt-1 font-sans text-sm text-[#171412]/45">
-                  {award.dates}
-                </p>
+                {award.dates && (
+                  <p className="mt-1 font-sans text-sm text-[#171412]/45">
+                    {award.dates}
+                  </p>
+                )}
               </div>
-              <ul className="max-w-[560px] list-disc space-y-3 pl-5 font-sans text-base leading-relaxed text-[#171412]/70 marker:text-[#171412]/30">
-                {award.highlights.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
+              <div className="max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/70">
+                <ul className="list-disc space-y-3 pl-5 marker:text-[#171412]/30">
+                  {award.highlights.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+                {award.requestAccess && (
+                  <a
+                    href={requestAccessHref(`${award.org} ${award.title}`)}
+                    className="mt-3 inline-block text-sm uppercase tracking-[0.1em] text-[#171412] underline decoration-[#171412]/30 underline-offset-4 transition-colors hover:decoration-[#171412]"
+                  >
+                    Request access →
+                  </a>
+                )}
+              </div>
             </article>
           ))}
         </div>
@@ -274,37 +349,44 @@ export default function Home() {
           Projects and papers I&apos;ve worked on.
         </p>
 
-        <div className="mt-12 divide-y divide-[#171412]/10">
-          {works.map((work) => (
-            <article
-              key={work.title}
-              className="grid grid-cols-1 gap-4 py-8 first:pt-0 md:grid-cols-[minmax(0,280px)_1fr] md:gap-10"
-            >
-              <div>
-                <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
-                  {work.title}
-                </h3>
-                <p className="mt-2 font-sans text-sm uppercase tracking-[0.1em] text-[#171412]/60">
-                  {work.kind}
-                </p>
-                <p className="mt-1 font-sans text-sm text-[#171412]/45">
-                  {work.meta}
-                </p>
-              </div>
-              <div className="max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/70">
-                <p>{work.description}</p>
-                {work.href && (
-                  <a
-                    href={work.href}
-                    className="mt-3 inline-block text-sm uppercase tracking-[0.1em] text-[#171412] underline decoration-[#171412]/30 underline-offset-4 transition-colors hover:decoration-[#171412]"
-                  >
-                    View →
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+        {works.map((category) => (
+          <div key={category.label} className="mt-14 first:mt-12">
+            <p className="font-sans text-xs uppercase tracking-[0.2em] text-[#171412]/50">
+              {category.label}
+            </p>
+
+            <div className="mt-4 divide-y divide-[#171412]/10">
+              {category.entries.map((work) => (
+                <article
+                  key={work.title}
+                  className="grid grid-cols-1 gap-4 py-8 first:pt-6 md:grid-cols-[96px_minmax(0,220px)_1fr] md:items-start md:gap-8"
+                >
+                  <Image
+                    src={work.image}
+                    alt={`Preview of "${work.title}"`}
+                    width={240}
+                    height={339}
+                    className="h-auto w-20 border border-[#171412]/15 md:w-full"
+                  />
+                  <div>
+                    <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
+                      {work.title}
+                    </h3>
+                  </div>
+                  <div className="max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/70">
+                    <p>{work.description}</p>
+                    <a
+                      href={requestAccessHref(work.title)}
+                      className="mt-3 inline-block text-sm uppercase tracking-[0.1em] text-[#171412] underline decoration-[#171412]/30 underline-offset-4 transition-colors hover:decoration-[#171412]"
+                    >
+                      Request access →
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
     </main>
   );

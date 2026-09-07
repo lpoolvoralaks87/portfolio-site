@@ -110,6 +110,13 @@ export default function AboutHero() {
             >
               Recognitions
             </a>
+
+            <a
+              href="#works"
+              className="transition-opacity hover:opacity-70"
+            >
+              Works
+            </a>
           </div>
 
           <p className="mt-10 max-w-[500px] font-sans text-base leading-relaxed text-[#171412]/65">
