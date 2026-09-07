@@ -147,7 +147,7 @@ const awards: AwardEntry[] = [
     org: "SeaX Ventures",
     location: "Millbrae, California",
     highlights: [
-      "Written by Weerawat Wongcharoenyai, Principal, and Supachai Kid Parchariyanon, Managing Partner, at SeaX Ventures.",
+      "Written by a Principal and a Managing Partner at SeaX Ventures.",
     ],
     requestAccess: true,
   },
