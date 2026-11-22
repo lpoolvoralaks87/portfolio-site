@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import PersonIllustration from "./PersonIllustration";
+import AboutIllustration from "./AboutIllustration";
 import Squiggle from "./Squiggle";
 import HandDrawnOval from "./HandDrawnOval";
 
@@ -68,7 +68,7 @@ export default function AboutHero() {
 
       <div className="grid grid-cols-1 items-center gap-12 px-6 pb-20 pt-4 md:grid-cols-[45%_55%] md:gap-8 md:px-12 md:pb-32 md:pt-8">
         <div className="order-2 flex justify-center md:order-1 md:justify-start">
-          <PersonIllustration className="h-auto w-full max-w-[280px] text-[#171412] md:max-w-[360px]" />
+          <AboutIllustration className="max-w-[320px] md:max-w-[520px]" />
         </div>
 
         <div className="order-1 md:order-2">
