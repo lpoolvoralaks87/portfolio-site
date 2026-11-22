@@ -5,6 +5,7 @@ import Link from "next/link";
 import AboutIllustration from "./AboutIllustration";
 import Squiggle from "./Squiggle";
 import HandDrawnOval from "./HandDrawnOval";
+import CrayonQuestionMark from "./CrayonQuestionMark";
 
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
@@ -34,7 +35,7 @@ export default function AboutHero() {
   return (
     <section className="w-full bg-[#EDE9E2] text-[#171412]">
       <nav className="grid grid-cols-3 items-center gap-2 px-4 py-6 sm:px-6 sm:py-8 md:px-12 md:py-10">
-        <div className="flex items-center gap-2 font-sans text-[10px] tracking-[0.1em] text-[#171412]/80 sm:gap-6 sm:text-xs sm:tracking-[0.18em]">
+        <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.07em] text-[#171412]/80 sm:gap-6 sm:text-xs sm:tracking-[0.12em]">
           <Link
             href="#works"
             className="uppercase transition-colors hover:text-[#171412]"
@@ -53,7 +54,7 @@ export default function AboutHero() {
         <div className="justify-self-center text-center">
           <Link
             href="/"
-            className="font-sans text-[9px] font-medium uppercase leading-[1.15] tracking-[0.14em] text-[#171412]/80 transition-colors hover:text-[#171412] sm:text-[11px] sm:tracking-[0.18em]"
+            className="font-mono text-[9px] font-medium uppercase leading-[1.15] tracking-[0.1em] text-[#171412]/80 transition-colors hover:text-[#171412] sm:text-[11px] sm:tracking-[0.12em]"
           >
             Back
             <br />
@@ -61,7 +62,7 @@ export default function AboutHero() {
           </Link>
         </div>
 
-        <div className="justify-self-end text-right font-sans text-[10px] tracking-[0.08em] text-[#171412]/80 sm:text-xs sm:tracking-[0.14em]">
+        <div className="justify-self-end text-right font-mono text-[10px] tracking-[0.05em] text-[#171412]/80 sm:text-xs sm:tracking-[0.1em]">
           {now ? formatLocalTime(now) : "LOCAL TIME: —"}
         </div>
       </nav>
@@ -76,17 +77,20 @@ export default function AboutHero() {
             Hey,
           </h1>
 
-          <p className="mt-6 font-sans text-xs tracking-[0.2em] text-[#171412]/70">
+          <p className="mt-6 font-mono text-xs tracking-[0.14em] text-[#171412]/70">
             JUST SOME STUFF ABOUT LALITA POOLVORALAKS
           </p>
 
           <div className="mt-6 flex flex-col items-start gap-2 font-serif text-4xl leading-[1.15] sm:text-5xl md:text-6xl">
-            <a
-              href="#who-am-i"
-              className="transition-opacity hover:opacity-70"
-            >
-              Who am I
-            </a>
+            <span className="flex items-center gap-2 sm:gap-3">
+              <a
+                href="#who-am-i"
+                className="transition-opacity hover:opacity-70"
+              >
+                Who am I
+              </a>
+              <CrayonQuestionMark className="pointer-events-none h-11 w-[26px] sm:h-[52px] sm:w-[31px] md:h-16 md:w-[38px]" />
+            </span>
 
             <span className="relative inline-block">
               <a
@@ -95,13 +99,7 @@ export default function AboutHero() {
               >
                 My experience
               </a>
-              <Squiggle className="pointer-events-none absolute -bottom-3 left-0 h-4 w-[110%]" />
-              <span
-                className="pointer-events-none absolute -right-10 -top-5 rotate-[-9deg] text-lg text-[#C1362B] sm:-right-14 sm:text-xl"
-                style={{ fontFamily: "var(--font-hand)" }}
-              >
-                ADD?
-              </span>
+              <Squiggle className="pointer-events-none absolute -bottom-3 left-0 w-[110%] sm:-bottom-4 md:-bottom-[22px]" />
             </span>
 
             <a

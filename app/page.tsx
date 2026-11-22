@@ -1,5 +1,8 @@
-import Image from "next/image";
 import AboutHero from "@/components/AboutHero";
+import ExperienceCard, { type ExperienceEntry } from "@/components/ExperienceCard";
+import AwardCard, { type AwardEntry } from "@/components/AwardCard";
+import WorkCard, { type WorkEntry } from "@/components/WorkCard";
+import Squiggle from "@/components/Squiggle";
 
 const REQUEST_ACCESS_EMAIL = "lpoolvoralaks87@cmc.edu";
 
@@ -10,32 +13,6 @@ function requestAccessHref(title: string) {
     subject
   )}&body=${encodeURIComponent(body)}`;
 }
-
-type ExperienceEntry = {
-  role: string;
-  org: string;
-  location: string;
-  dates: string;
-  highlights: string[];
-};
-
-type AwardEntry = {
-  title: string;
-  org: string;
-  location: string;
-  dates?: string;
-  highlights: string[];
-  requestAccess?: boolean;
-};
-
-type WorkEntry = {
-  title: string;
-  kind: string;
-  meta: string;
-  description: string;
-  image: string;
-  href?: string;
-};
 
 type WorkCategory = {
   label: string;
@@ -48,6 +25,7 @@ const experience: ExperienceEntry[] = [
     org: "Accenture",
     location: "Bangkok, Thailand",
     dates: "Summer 2025, Summer 2026",
+    stat: { value: "~20%", label: "higher customer retention from a new loyalty program launch" },
     highlights: [
       "Designed strategy and spearheaded creative execution for a new loyalty program launch for one of the largest retail conglomerates, increasing customer retention by ~20%",
       "Produced comprehensive pitch decks and presented to client BOD in weekly steering committee meetings",
@@ -59,6 +37,7 @@ const experience: ExperienceEntry[] = [
     org: "Girls Into Venture Capital",
     location: "Claremont, California",
     dates: "Jan 2026 – Present",
+    stat: { value: "10 wks", label: "fellowship program delivered across the Claremont Colleges" },
     highlights: [
       "Founded and launched a new chapter across the Claremont Colleges; led curriculum development and event programming",
       "Delivered a 10-week fellowship program, organizing competitions and workshops with founders and women in venture capital",
@@ -69,6 +48,7 @@ const experience: ExperienceEntry[] = [
     org: "OpenTest.AI",
     location: "Claremont, California",
     dates: "Jan 2026 – May 2026",
+    stat: { value: "$2K+", label: "raised to run events and investor outreach" },
     highlights: [
       "Led investor and client outreach initiatives, coordinated events by raising $2,000+, and managed operational implementations",
       "Developed marketing campaigns and conducted market research to support growth and positioning strategies",
@@ -80,6 +60,7 @@ const experience: ExperienceEntry[] = [
     org: "Sokil",
     location: "Claremont, California",
     dates: "Mar 2025 – May 2025",
+    stat: { value: "50+", label: "investors I presented my UAV research to" },
     highlights: [
       "Conducted comprehensive market analysis of the demining/drone sector and designed a pricing model",
       "Built a market-entry strategy into Ukraine, balancing financial sustainability with accessibility for small demining NGOs",
@@ -91,6 +72,7 @@ const experience: ExperienceEntry[] = [
     org: "SeaX Ventures",
     location: "Bangkok, Thailand",
     dates: "May 2024 – July 2024",
+    stat: { value: "40+", label: "deals sourced, with 2 closed" },
     highlights: [
       "Oversaw the end-to-end deal process: 40+ deals sourced, several advanced to due diligence, 2 closed",
       "Advised portfolio company founders through structured consulting sessions, producing investment memos and LP reports that supported strategic partnerships and drove ~30% revenue growth across the portfolio",
@@ -102,6 +84,8 @@ const awards: AwardEntry[] = [
   {
     title: "First Place Winner",
     org: "RLCIE Pitch Competition",
+    badge: "1st",
+    prize: "$1,000 prize",
     location: "Claremont, California",
     dates: "April 2025",
     highlights: [
@@ -111,6 +95,8 @@ const awards: AwardEntry[] = [
   {
     title: "Finalist",
     org: "Accenture Innovation Challenge",
+    badge: "Finalist",
+    prize: "One of four teams flown to the D.C. final",
     location: "Washington, D.C.",
     dates: "Jan 2025 – Feb 2025",
     highlights: [
@@ -119,8 +105,23 @@ const awards: AwardEntry[] = [
     ],
   },
   {
+    title: "3rd Place Winner",
+    org: "Sparkathon",
+    badge: "3rd",
+    prize: "$500, out of 120+ students",
+    location: "Claremont, California",
+    dates: "Nov 2024",
+    highlights: [
+      "Awarded $500 for placing third out of 120+ students",
+      "Sponsored by Roblox, Notion, and Perplexity; the largest case competition of the Claremont Colleges",
+      "An impact-driven design thinking competition that challenges students from across California to collaboratively solve societal problems",
+    ],
+  },
+  {
     title: "First Place Winner",
     org: "Venture Program with March Capital Competition",
+    badge: "1st",
+    prize: "$5,000 and a trip to the Montgomery Summit",
     location: "Claremont, California",
     dates: "Nov 2023 – March 2024",
     highlights: [
@@ -131,25 +132,24 @@ const awards: AwardEntry[] = [
   {
     title: "Second Place Winner",
     org: "Actionist Consulting Case Competition",
+    badge: "2nd",
+    prize: "Out of 50+ participants",
     location: "Claremont, California",
     dates: "May 2026",
     highlights: ["Placed second out of 50+ participants"],
   },
+];
+
+const letters = [
   {
     title: "Letter of Recommendation",
     org: "Accenture",
-    location: "Bangkok, Thailand",
-    highlights: ["Written by a Managing Director at Accenture."],
-    requestAccess: true,
+    note: "Written by a Managing Director at Accenture.",
   },
   {
     title: "Letter of Reference",
     org: "SeaX Ventures",
-    location: "Millbrae, California",
-    highlights: [
-      "Written by a Principal and a Managing Partner at SeaX Ventures.",
-    ],
-    requestAccess: true,
+    note: "Written by a Principal and a Managing Partner at SeaX Ventures.",
   },
 ];
 
@@ -234,34 +234,8 @@ export default function Home() {
           before switching allegiances to Economics and Data Science.
           Outside of class, I&apos;m probably wrangling a cat I&apos;m
           deeply allergic to, doing my daily Sudoku, or scavenging for a
-          new favorite restaurant while pondering Tolstoy somewhere between
-          bites.
+          new favorite restaurant.
         </p>
-
-        <dl className="mt-12 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-8 font-sans text-sm sm:grid-cols-3">
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-[#171412]/50">
-              Languages
-            </dt>
-            <dd className="mt-2 text-[#171412]/80">Thai, English</dd>
-          </div>
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-[#171412]/50">
-              Technical
-            </dt>
-            <dd className="mt-2 text-[#171412]/80">
-              Excel, R, STATA, Google Suite
-            </dd>
-          </div>
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-[#171412]/50">
-              Interests
-            </dt>
-            <dd className="mt-2 text-[#171412]/80">
-              Gastronomy, numerology, fencing, tea
-            </dd>
-          </div>
-        </dl>
       </section>
 
       <section
@@ -272,77 +246,65 @@ export default function Home() {
           My experience
         </h2>
 
-        <div className="mt-12 divide-y divide-[#171412]/10">
-          {experience.map((entry) => (
-            <article
+        <div className="mt-12 grid grid-cols-1 items-start gap-6 md:grid-cols-2 md:gap-8">
+          {experience.map((entry, i) => (
+            <ExperienceCard
               key={`${entry.org}-${entry.role}`}
-              className="grid grid-cols-1 gap-4 py-8 first:pt-0 md:grid-cols-[minmax(0,280px)_1fr] md:gap-10"
-            >
-              <div>
-                <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
-                  {entry.org}
-                </h3>
-                <p className="mt-2 font-sans text-sm uppercase tracking-[0.1em] text-[#171412]/60">
-                  {entry.role} — {entry.location}
-                </p>
-                <p className="mt-1 font-sans text-sm text-[#171412]/45">
-                  {entry.dates}
-                </p>
-              </div>
-              <ul className="max-w-[560px] list-disc space-y-3 pl-5 font-sans text-base leading-relaxed text-[#171412]/70 marker:text-[#171412]/30">
-                {entry.highlights.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </article>
+              entry={entry}
+              index={i}
+            />
           ))}
         </div>
       </section>
 
       <section
         id="recognitions"
-        className="flex flex-col justify-center border-t border-[#171412]/10 bg-[#EDE9E2] px-6 py-24 md:px-12"
+        className="flex flex-col justify-center border-t border-[#171412]/10 bg-[#EDE9E2] px-6 pb-16 pt-24 md:px-12"
       >
         <h2 className="font-serif text-5xl text-[#171412] md:text-6xl">
           Recognitions
         </h2>
 
-        <div className="mt-12 divide-y divide-[#171412]/10">
+        <div className="mt-12 grid grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6 md:[&>*:last-child:nth-child(odd)]:col-span-2">
           {awards.map((award) => (
-            <article
-              key={award.org}
-              className="grid grid-cols-1 gap-4 py-8 first:pt-0 md:grid-cols-[minmax(0,280px)_1fr] md:gap-10"
-            >
-              <div>
-                <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
-                  {award.org}
-                </h3>
-                <p className="mt-2 font-sans text-sm uppercase tracking-[0.1em] text-[#171412]/60">
-                  {award.title} — {award.location}
-                </p>
-                {award.dates && (
-                  <p className="mt-1 font-sans text-sm text-[#171412]/45">
-                    {award.dates}
-                  </p>
-                )}
-              </div>
-              <div className="max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/70">
-                <ul className="list-disc space-y-3 pl-5 marker:text-[#171412]/30">
-                  {award.highlights.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-                {award.requestAccess && (
-                  <a
-                    href={requestAccessHref(`${award.org} ${award.title}`)}
-                    className="mt-3 inline-block text-sm uppercase tracking-[0.1em] text-[#171412] underline decoration-[#171412]/30 underline-offset-4 transition-colors hover:decoration-[#171412]"
-                  >
-                    Request access →
-                  </a>
-                )}
-              </div>
-            </article>
+            <AwardCard key={award.org + award.title} award={award} />
           ))}
+        </div>
+      </section>
+
+      <section
+        id="letters"
+        className="flex flex-col justify-center bg-[#EDE9E2] px-6 pb-24 pt-4 md:px-12"
+      >
+        <div className="border-t border-[#171412]/10 pt-10">
+          <h3 className="font-serif text-3xl text-[#171412] md:text-4xl">
+            Letters
+          </h3>
+          <p className="mt-2 font-sans text-sm text-[#171412]/50">
+            Shared on request.
+          </p>
+
+          <ul className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 sm:grid-cols-2">
+            {letters.map((letter) => (
+              <li
+                key={letter.title}
+                className="font-sans text-sm leading-relaxed text-[#171412]/60"
+              >
+                <span className="font-serif text-lg text-[#171412]">
+                  {letter.title}
+                </span>
+                <span className="text-[#171412]/45"> · {letter.org}</span>
+                <br />
+                {letter.note}{" "}
+                <a
+                  href={requestAccessHref(`${letter.org} ${letter.title}`)}
+                  className="whitespace-nowrap text-[#171412] underline decoration-[#C1362B]/60 decoration-2 underline-offset-4 transition-colors hover:decoration-[#C1362B]"
+                >
+                  Request access →
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -358,39 +320,22 @@ export default function Home() {
         </p>
 
         {works.map((category) => (
-          <div key={category.label} className="mt-14 first:mt-12">
-            <p className="font-sans text-xs uppercase tracking-[0.2em] text-[#171412]/50">
-              {category.label}
-            </p>
+          <div key={category.label} className="mt-16">
+            <div className="relative inline-block">
+              <h3 className="font-serif text-3xl text-[#171412] md:text-4xl">
+                {category.label}
+              </h3>
+              <Squiggle className="pointer-events-none absolute -bottom-3 left-0 w-full" />
+            </div>
 
-            <div className="mt-4 divide-y divide-[#171412]/10">
-              {category.entries.map((work) => (
-                <article
+            <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+              {category.entries.map((work, i) => (
+                <WorkCard
                   key={work.title}
-                  className="grid grid-cols-1 gap-4 py-8 first:pt-6 md:grid-cols-[96px_minmax(0,220px)_1fr] md:items-start md:gap-8"
-                >
-                  <Image
-                    src={work.image}
-                    alt={`Preview of "${work.title}"`}
-                    width={240}
-                    height={339}
-                    className="h-auto w-20 border border-[#171412]/15 md:w-full"
-                  />
-                  <div>
-                    <h3 className="font-serif text-2xl text-[#171412] md:text-[28px]">
-                      {work.title}
-                    </h3>
-                  </div>
-                  <div className="max-w-[560px] font-sans text-base leading-relaxed text-[#171412]/70">
-                    <p>{work.description}</p>
-                    <a
-                      href={requestAccessHref(work.title)}
-                      className="mt-3 inline-block text-sm uppercase tracking-[0.1em] text-[#171412] underline decoration-[#171412]/30 underline-offset-4 transition-colors hover:decoration-[#171412]"
-                    >
-                      Request access →
-                    </a>
-                  </div>
-                </article>
+                  work={work}
+                  index={i}
+                  requestHref={requestAccessHref(work.title)}
+                />
               ))}
             </div>
           </div>
